@@ -1,7 +1,7 @@
 from extraction_treatment import clean_column_names,load_csv_files,convert_date_columns,create_dimension_tables,SELECTED_COLUMNS,\
     resolve_id_reference,setup_postgres_database,create_table,insert_data,ID_PATTERN,display_head,display_summary_stats,display_value_counts,\
     create_indexes,verify_data
-
+import pandas as pd
 def main():
     """Pipeline principal pour traiter et ingérer les données dans PostgreSQL."""
     try:
@@ -23,7 +23,8 @@ def main():
             df[col] = df[col].astype(str).apply(
                 lambda x: resolve_id_reference(x, dataset, col)
             ).astype(float, errors='ignore')
-
+        df['freight_cost_usd']=pd.to_numeric(df['freight_cost_usd'])
+        df['weight_kilograms']=pd.to_numeric(df['weight_kilograms'])
         # Étape 6 : Nettoyage des données
         df = df.dropna(subset=["shipment_mode", "line_item_insurance_usd"])
         print(f"Après nettoyage, {len(df)} lignes restantes.")
