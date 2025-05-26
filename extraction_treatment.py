@@ -264,4 +264,21 @@ def display_value_counts(df, column, title="Répartition des valeurs"):
     print(df[column].value_counts().to_string())
     print(f"Nombre de valeurs uniques : {df[column].nunique()}")
 
+def create_indexes(pg_conn):
+    cursor = pg_conn.cursor()
+    cursor.execute(sql.SQL("CREATE INDEX idx_deliveries_country ON deliveries (country_id)"))
+    cursor.execute(sql.SQL("CREATE INDEX idx_deliveries_mode ON deliveries (mode_id)"))
+    cursor.execute(sql.SQL("CREATE INDEX idx_deliveries_product ON deliveries (product_id)"))
+    cursor.close()
+
+def verify_data(pg_conn, table_name, limit=5):
+    cursor = pg_conn.cursor()
+    cursor.execute(sql.SQL("SELECT * FROM {} LIMIT %s").format(sql.Identifier(table_name)), (limit,))
+    rows = cursor.fetchall()
+    print(f"\nVérification des données dans {table_name} :")
+    for row in rows:
+        print(row)
+    cursor.close()
+
+
 
