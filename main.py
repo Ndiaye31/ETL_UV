@@ -1,4 +1,4 @@
-from test import clean_column_names,load_csv_files,convert_date_columns,create_dimension_tables,SELECTED_COLUMNS,\
+from extraction_treatment import clean_column_names,load_csv_files,convert_date_columns,create_dimension_tables,SELECTED_COLUMNS,\
     resolve_id_reference,setup_postgres_database,create_table,insert_data,ID_PATTERN,display_head,display_summary_stats,display_value_counts
 
 def main():
